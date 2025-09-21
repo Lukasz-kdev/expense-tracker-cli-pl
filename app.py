@@ -25,12 +25,16 @@ def add_expense():
     date = input(f"Data (Enter = {today}): ").strip() or today
     category = input("Kategoria (np. jedzenie, transport): ").strip() or "inne"
     description = input("Opis: ").strip() or "-"
-    amount_str = input("Kwota (np. 23.50): ").strip()
-    try:
-        amount = round(float(amount_str.replace(",", ".")), 2)
-    except ValueError:
-        print("❗ Błąd: kwota musi być liczbą. Spróbuj ponownie.")
-        return
+    while True:
+        amount_str = input("Kwota (np. 23.50): ").strip()
+        try:
+            amount = round(float(amount_str.replace(",", ".")), 2)
+            if amount <= 0:
+                print("❗ Błąd: kwota musi być większa od 0. Spróbuj ponownie.")
+                continue
+            break
+        except ValueError:
+            print("❗ Błąd: kwota musi być liczbą. Spróbuj ponownie.")
 
     with CSV_PATH.open("a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
